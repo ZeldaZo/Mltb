@@ -532,31 +532,26 @@ def uploadee(url):
         raise DirectDownloadLinkException("ERROR: Direct Link not found")
 
 def terabox(url):
-    if not ospath.isfile("terabox.txt"):
-        raise DirectDownloadLinkException("ERROR: terabox.txt not found")
-
-    try:
-        jar = MozillaCookieJar("terabox.txt")
-        jar.load()
-    except Exception as e:
-        raise DirectDownloadLinkException(f"ERROR: {e.__class__.__name__}")
-
-    cookies = {}
-    ndus = None
-    for cookie in jar:
-        cookies[cookie.name] = cookie.value
-        if cookie.name == 'NDUS':
-            ndus = cookie.value
-
-    if not ndus:
-        raise ValueError("NDUS cookie not found in terabox.txt")
-
+    ndus = "YysffKjteHuiekNeLu8aY2qzuGMorFEuOeqYeOUt"
+    
     details = {"contents": [], "title": "", "total_size": 0}
-    details["header"] = " ".join(f"{key}: {value}" for key, value in cookies.items())
-
+    
     def __fetch_links(session, dir_="", folderPath=""):
         params = {"app_id": "250528", "jsToken": jsToken, "shorturl": shortUrl}
         if dir_:
             params["dir"] = dir_
         else:
-           
+            params["root"] = "1"
+        try:
+            _json = session.get(
+                "https://www.terabox.com/share/list",
+                params=params,
+                cookies={"NDUS": ndus},
+            ).json()
+        except Exception as e:
+            raise DirectDownloadLinkException(f"ERROR: {e.__class__.__name__}")
+        if _json["errno"] not in [0, "0"]:
+            if "errmsg" in _json:
+                raise DirectDownloadLinkException(f"ERROR: {_json['errmsg']}")
+            else:
+                raise DirectDownloadLinkException("ERROR: Something 
