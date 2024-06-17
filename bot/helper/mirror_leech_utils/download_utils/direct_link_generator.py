@@ -533,7 +533,7 @@ def uploadee(url):
         raise DirectDownloadLinkException("ERROR: Direct Link not found")
 
 def terabox(url):
-    ndus = "YysffKjteHuiekNeLu8aY2qzuGMorFEuOeqYeOUt"
+    ndus = "YdGBRK4teHuiJr_BBkBiySKSDOYIEJKt2DGEIhqo"
     
     details = {"contents": [], "title": "", "total_size": 0}
     
