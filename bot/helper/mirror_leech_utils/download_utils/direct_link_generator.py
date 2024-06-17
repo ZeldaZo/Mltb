@@ -558,4 +558,3 @@ def terabox(url):
         params = {"app_id": "250528", "jsToken": jsToken, "shorturl": shortUrl}
         if dir_:
             params["dir"] = dir_
-        else:
